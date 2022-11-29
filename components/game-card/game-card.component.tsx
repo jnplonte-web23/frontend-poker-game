@@ -42,7 +42,7 @@ const GameCard = (props: any) => {
 							<Grid xs={12} lg={8}>
 								<Col>
 									<Text color="#333" size={18}>
-										PRICE: 100 HBAR
+										PLAYERS: 2/8
 									</Text>
 									<Text color="#333" size={12} className="hide_xs">
 										Lorem ipsum dolor sit amet, consectetur adipiscing elit consectetur adipiscing elit...

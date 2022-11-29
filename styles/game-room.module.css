@@ -1,0 +1,47 @@
+.table {
+	background-color: #2e8b57;
+	height: 600px;
+	width: 1200px;
+	border-radius: 50%;
+	margin: 0 auto;
+	border: 1em solid #333;
+	position: relative;
+}
+
+.board {
+	position: absolute;
+	top: 40%;
+	left: 30%;
+}
+.cardsmall {
+	border: 0.2em solid #333;
+	border-radius: 10%;
+	height: 100px;
+	width: 70px;
+	margin-right: 30px;
+	float: left;
+	background-color: #fff;
+}
+
+.cardtext {
+	margin: 0;
+	margin-top: 10px;
+	text-align: center;
+	font-size: 1.5em;
+	font-weight: bold;
+	padding: 0;
+}
+
+.cardimg {
+	text-align: center;
+	margin: -10px;
+	font-size: 2em;
+}
+
+.red {
+	color: #ff0000;
+}
+
+.black {
+	color: #333;
+}

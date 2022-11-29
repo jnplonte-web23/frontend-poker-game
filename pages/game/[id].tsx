@@ -69,23 +69,16 @@ const GameSelect: NextPage = () => {
 	const { id } = $router.query;
 
 	const $helper: Helper = useMemo(() => new Helper(), []);
-	const { pairingData, network, topic, hashconnect } = GetHashPackInformation();
+	const { pairingData } = GetHashPackInformation();
 
 	const [$loading, $setLoading] = useState(true);
 	const [$contractLoading, $setContractLoading] = useState(true);
 	const [$gameStart, $setGameStart] = useState(false);
-	const [$playerLimit, $setPlayerLimit] = useState<number>(0);
-	const [$playerCount, $setPlayerCount] = useState<number>(0);
-	const [$price, $setPrice] = useState<number>(0);
 	const [$address, $setAddress] = useState<string>('');
-	const [$numberOfEntries, $setNumberOfEntries] = useState<number>(1);
-	const [$referalAddress, $setReferalAddress] = useState<string>(process.env.NEXT_PUBLIC_TEST_ACCOUNT || '');
+	const [$numberOfHbar, $setNumberOfHbar] = useState<number>(100);
 
-	const handleChangeNumberOfEntries = (_event: any) => {
-		$setNumberOfEntries(Number(_event.target.value));
-	};
-	const handleChangeReferalAddress = (_event: any) => {
-		$setReferalAddress(_event.target.value);
+	const handleChangeNumberOfHbar = (_event: any) => {
+		$setNumberOfHbar(Number(_event.target.value));
 	};
 
 	const getInitData = async () => {
@@ -99,76 +92,13 @@ const GameSelect: NextPage = () => {
 		if (xxgameResponse) {
 			$setGameStart(xxgameResponse.getBool(0));
 		}
-
-		// const priceTransaction = new ContractExecuteTransaction()
-		// 	.setContractId(CONTRACTID)
-		// 	.setGas(3000000)
-		// 	.setFunction('getPrice');
-		// const priceResponse = await priceTransaction.execute($$client);
-		// const xpriceResponse = await priceResponse.getRecord($$client);
-		// const xxpriceResponse = await xpriceResponse.contractFunctionResult;
-		// if (xxpriceResponse) {
-		// 	$setPrice(Number(xxpriceResponse.getUint256(0)));
-		// }
-		// const playerLimitTransaction = new ContractExecuteTransaction()
-		// 	.setContractId(CONTRACTID)
-		// 	.setGas(3000000)
-		// 	.setFunction('getPlayerLimit');
-		// const playerLimitResponse = await playerLimitTransaction.execute($$client);
-		// const xplayerLimitResponse = await playerLimitResponse.getRecord($$client);
-		// const xxplayerLimitResponse = await xplayerLimitResponse.contractFunctionResult;
-		// if (xxplayerLimitResponse) {
-		// 	$setPlayerLimit(Number(xxplayerLimitResponse.getUint256(0)));
-		// }
-		// getPlayerCount();
 	};
-
-	// const getPlayerCount = async () => {
-	// 	const playerCountTransaction = new ContractExecuteTransaction()
-	// 		.setContractId(CONTRACTID)
-	// 		.setGas(3000000)
-	// 		.setFunction('getPlayerCount');
-	// 	const playerCountResponse = await playerCountTransaction.execute($$client);
-	// 	const xplayerCountResponse = await playerCountResponse.getRecord($$client);
-	// 	const xxplayerCountResponse = await xplayerCountResponse.contractFunctionResult;
-	// 	if (xxplayerCountResponse) {
-	// 		$setPlayerCount(Number(xxplayerCountResponse.getUint256(0)));
-	// 	}
-	// };
 
 	const joinGame = async () => {
 		$setContractLoading(true);
 
-		try {
-			const id = pairingData?.accountIds.reduce($helper.conCatAccounts);
-			const provider = hashconnect.getProvider(network, topic, id);
-			const signer = hashconnect.getSigner(provider);
-
-			const param = new ContractFunctionParameters();
-			param.addUint8(Number($numberOfEntries));
-			if ($helper.isNotEmpty($referalAddress)) {
-				const addr = AccountId.fromString($referalAddress).toString();
-				const addrArr = addr.split('.');
-				const addrNum = new AccountId(parseInt(addrArr[0]), parseInt(addrArr[1]), parseInt(addrArr[3]));
-				param.addAddress(addrNum.toSolidityAddress());
-			}
-
-			const playerTransaction = new ContractExecuteTransaction()
-				.setContractId(CONTRACTID)
-				.setGas(300000)
-				.setPayableAmount(new Hbar(100))
-				.setFunction('setPlayerData', param)
-				.freezeWithSigner(signer);
-
-			const playerResponse = await (await playerTransaction).executeWithSigner(signer);
-			if (playerResponse && playerResponse.transactionHash) {
-				toast('JOIN SUCCESS');
-			} else {
-				toast('JOIN FAILED');
-			}
-		} catch (error) {
-			toast(`JOIN FAILED`, $helper.toString(error));
-		}
+		toast('JOIN SUCCESS');
+		$router.push(`/game/room/${id}`);
 
 		$setContractLoading(false);
 	};
@@ -212,10 +142,10 @@ const GameSelect: NextPage = () => {
 							<Grid xs={12} lg={4}>
 								<Card>
 									<Card.Image
-										src="https://api.lorem.space/image/car?w=300&h=450&hash=8B7BCDC0"
+										src="https://api.lorem.space/image/car?w=300&h=350&hash=8B7BCDC0"
 										objectFit="cover"
 										width="100%"
-										height={450}
+										height={350}
 										alt="Card image background"
 									/>
 								</Card>
@@ -226,47 +156,28 @@ const GameSelect: NextPage = () => {
 										POKER GAME {id}
 									</Text>
 									<Text h4 color="white">
-										PLAYERS JOIN: 35 / 100
+										PLAYERS JOIN: 3 / 8
 									</Text>
 									<Card>
 										<Card.Body>
 											<Text b h3>
-												GAME ENDS IN November 30, 2022
-											</Text>
-											<Text>00 : 00 : 00</Text>
-											<Spacer y={1} />
-											<Card.Divider />
-											<Spacer y={1} />
-											<Text b h3>
-												JOINING FEE: 100 HBAR
+												MINIMUM BUY IN: 100 HBAR
 											</Text>
 											<Spacer y={3} />
 											<Grid.Container gap={2}>
 												<Grid xs={6} lg={3}>
 													<Input
-														aria-label="numberOfEntries"
-														min="1"
+														aria-label="numberOfHbar"
+														min="100"
 														width="100%"
 														bordered
-														labelPlaceholder="number of entries"
+														labelPlaceholder="number of hbar"
 														type="number"
-														value={$numberOfEntries}
-														onChange={handleChangeNumberOfEntries}
+														value={$numberOfHbar}
+														onChange={handleChangeNumberOfHbar}
 													/>
 												</Grid>
-												<Grid xs={6} lg={3}>
-													<Input
-														aria-label="referalAddress"
-														width="100%"
-														clearable
-														bordered
-														labelPlaceholder="referal address"
-														value={$referalAddress}
-														onChange={handleChangeReferalAddress}
-													/>
-												</Grid>
-
-												<Grid xs={12} lg={6}>
+												<Grid xs={12} lg={9}>
 													{$contractLoading ? (
 														<div className="full_width text_center">
 															<Loading type="points" size="xl" />
