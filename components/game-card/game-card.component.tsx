@@ -21,7 +21,7 @@ const GameCard = (props: any) => {
 					<Card.Header css={{ position: 'absolute', zIndex: 1, top: 5 }}>
 						<Col>
 							<Text h3 color="black">
-								{`RANDOM GAME ${id}`}
+								{`POKER GAME ${id}`}
 							</Text>
 						</Col>
 					</Card.Header>

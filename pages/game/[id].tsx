@@ -199,7 +199,7 @@ const GameSelect: NextPage = () => {
 	return (
 		<MainLayout>
 			<Head>
-				<title>{`RANDOM GAME | GAME ${id}`}</title>
+				<title>{`POKER GAME | GAME ${id}`}</title>
 				<meta name="description" content={`game ${id}`} />
 			</Head>
 
@@ -223,7 +223,7 @@ const GameSelect: NextPage = () => {
 							<Grid xs={12} lg={8}>
 								<Col>
 									<Text h1 color="white">
-										RANDOM GAME {id}
+										POKER GAME {id}
 									</Text>
 									<Text h4 color="white">
 										PLAYERS JOIN: 35 / 100

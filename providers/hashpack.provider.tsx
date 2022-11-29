@@ -8,8 +8,8 @@ import { IHashConnectProps, IProviderProps } from '../interfaces';
 const hashconnect = new HashConnect(true);
 
 const appMetadata: HashConnectTypes.AppMetadata = {
-	name: 'random game',
-	description: 'random game',
+	name: 'poker game',
+	description: 'poker game',
 	icon: 'https://images.squarespace-cdn.com/content/v1/62fe8b1b52012f6be63d3de2/eb2a7df5-9e74-4b2f-a8fb-74a6e79d1958/favicon.ico',
 };
 

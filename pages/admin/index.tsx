@@ -133,7 +133,7 @@ const Admin: NextPage = () => {
 	return (
 		<MainLayout>
 			<Head>
-				<title>RANDOM GAME | ADMIN</title>
+				<title>POKER GAME | ADMIN</title>
 				<meta name="description" content="admin" />
 			</Head>
 

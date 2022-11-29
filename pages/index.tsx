@@ -18,7 +18,7 @@ const Index: NextPage = () => {
 	return (
 		<MainLayout>
 			<Head>
-				<title>RANDOM GAME | HOME</title>
+				<title>POKER GAME | HOME</title>
 				<meta name="description" content="home" />
 				<link rel="shortcut icon" href="/favicon.ico" />
 			</Head>

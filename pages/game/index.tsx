@@ -27,7 +27,7 @@ const Game: NextPage = () => {
 	return (
 		<MainLayout>
 			<Head>
-				<title>RANDOM GAME | GAME</title>
+				<title>POKER GAME | GAME</title>
 				<meta name="description" content="game" />
 			</Head>
 

@@ -18,7 +18,7 @@ const AboutUs: NextPage = () => {
 	return (
 		<MainLayout>
 			<Head>
-				<title>RANDOM GAME | ABOUT US</title>
+				<title>POKER GAME | ABOUT US</title>
 				<meta name="description" content="about us" />
 			</Head>
 
