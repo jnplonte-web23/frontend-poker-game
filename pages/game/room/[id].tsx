@@ -2,7 +2,7 @@ import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useEffect, useState, useMemo } from 'react';
 
-import { Container, Card, Text, Grid, Input, Spacer, Button, Loading, Col } from '@nextui-org/react';
+import { Container, Card, Text, Grid, Input, Spacer, Button, Loading, Col, Badge } from '@nextui-org/react';
 import { toast } from 'react-toastify';
 
 import Head from 'next/head';
@@ -54,6 +54,22 @@ const GameRoom: NextPage = () => {
 		$setContractLoading(false);
 	};
 
+	const foldGame = async () => {
+		$setContractLoading(true);
+
+		toast('FOLD SUCCESS');
+
+		$setContractLoading(false);
+	};
+
+	const allInGame = async () => {
+		$setContractLoading(true);
+
+		toast('ALL IN SUCCESS');
+
+		$setContractLoading(false);
+	};
+
 	useEffect(() => {
 		if (pairingData) {
 			$setAddress(pairingData?.accountIds.reduce($helper.conCatAccounts));
@@ -93,17 +109,75 @@ const GameRoom: NextPage = () => {
 							<Grid xs={12} lg={6}>
 								<Card>
 									<Card.Body>
-										<Text b h3>
-											CARDS: A, B, C, D, E
-										</Text>
-										<Spacer y={3} />
+										<Grid.Container gap={2}>
+											<Grid>
+												<Badge enableShadow size="lg" disableOutline>
+													WAITING
+												</Badge>
+											</Grid>
+											<Grid>
+												<Badge enableShadow size="lg" disableOutline color="primary">
+													YOUR TURN (90 sec left)
+												</Badge>
+											</Grid>
+											<Grid>
+												<Badge enableShadow size="lg" disableOutline color="success">
+													BET 20 HBAR
+												</Badge>
+											</Grid>
+											<Grid>
+												<Badge enableShadow size="lg" disableOutline color="error">
+													FOLDED
+												</Badge>
+											</Grid>
+										</Grid.Container>
+										<Spacer y={1} />
+										<Grid.Container gap={2}>
+											<Grid xs={12} lg={12}>
+												<Text h4 color="white">
+													CARDS ON HAND:
+												</Text>
+											</Grid>
+											<Grid xs={12} lg={12}>
+												<Grid.Container className={styles.cards} gap={1}>
+													<Grid xs={12} lg={2}></Grid>
+													<Grid xs={6} lg={2}>
+														<div className={styles.cardsmall}>
+															<p className={`${styles.cardtext} ${styles.black}`}>A</p>
+															<p className={`${styles.cardimg} ${styles.black}`}>&clubs;</p>
+														</div>
+													</Grid>
+													<Grid xs={6} lg={2}>
+														<div className={styles.cardsmall}>
+															<p className={`${styles.cardtext} ${styles.black}`}>J</p>
+															<p className={`${styles.cardimg} ${styles.black}`}>&spades;</p>
+														</div>
+													</Grid>
+													<Grid xs={6} lg={2}>
+														<div className={styles.cardsmall}>
+															<p className={`${styles.cardtext} ${styles.red}`}>Q</p>
+															<p className={`${styles.cardimg} ${styles.red}`}>&hearts;</p>
+														</div>
+													</Grid>
+													<Grid xs={6} lg={2}>
+														<div className={styles.cardsmall}>
+															<p className={`${styles.cardtext} ${styles.red}`}>K</p>
+															<p className={`${styles.cardimg} ${styles.red}`}>&diams;</p>
+														</div>
+													</Grid>
+													<Grid xs={6} lg={2}>
+														<div className={styles.cardback}></div>
+													</Grid>
+												</Grid.Container>
+											</Grid>
+										</Grid.Container>
 									</Card.Body>
 								</Card>
 							</Grid>
 							<Grid xs={12} lg={6}>
 								<Col>
 									<Text h1 color="white">
-										POKER GAME {id}
+										POKER GAME {id} - PLAYER 1
 									</Text>
 									<Text h4 color="white">
 										PLAYERS JOIN: 3 / 8
@@ -111,7 +185,7 @@ const GameRoom: NextPage = () => {
 									<Card>
 										<Card.Body>
 											<Text b h3>
-												AVAILABLE: 100 HBAR
+												AVAILABLE CHIPS: 100
 											</Text>
 											<Spacer y={3} />
 											<Grid.Container gap={2}>
@@ -127,17 +201,61 @@ const GameRoom: NextPage = () => {
 														onChange={handleChangeNumberOfHbar}
 													/>
 												</Grid>
-												<Grid xs={12} lg={9}>
-													{$contractLoading ? (
+												{$contractLoading ? (
+													<Grid xs={12} lg={9}>
 														<div className="full_width text_center">
 															<Loading type="points" size="xl" />
 														</div>
-													) : (
-														<Button className="full_width" size="lg" auto onPress={betGame} disabled={!pairingData}>
-															BET
-														</Button>
-													)}
-												</Grid>
+													</Grid>
+												) : (
+													<>
+														<Grid xs={12} lg={3}>
+															{$contractLoading ? (
+																<div className="full_width text_center">
+																	<Loading type="points" size="xl" />
+																</div>
+															) : (
+																<Button className="full_width" size="lg" auto onPress={betGame} disabled={!pairingData}>
+																	BET
+																</Button>
+															)}
+														</Grid>
+														<Grid xs={12} lg={3}>
+															{$contractLoading ? (
+																<div className="full_width text_center">
+																	<Loading type="points" size="xl" />
+																</div>
+															) : (
+																<Button
+																	className="full_width"
+																	size="lg"
+																	auto
+																	onPress={foldGame}
+																	disabled={!pairingData}
+																>
+																	FOLD
+																</Button>
+															)}
+														</Grid>
+														<Grid xs={12} lg={3}>
+															{$contractLoading ? (
+																<div className="full_width text_center">
+																	<Loading type="points" size="xl" />
+																</div>
+															) : (
+																<Button
+																	className="full_width"
+																	size="lg"
+																	auto
+																	onPress={allInGame}
+																	disabled={!pairingData}
+																>
+																	ALL IN
+																</Button>
+															)}
+														</Grid>
+													</>
+												)}
 											</Grid.Container>
 										</Card.Body>
 									</Card>
@@ -153,6 +271,8 @@ const GameRoom: NextPage = () => {
 									<Card.Divider />
 									<Card.Body>
 										<div className={styles.table}>
+											<div className={styles.dealer}></div>
+											<div className={`${styles.player} ${styles.player1}`}></div>
 											<div className={styles.board}>
 												<div className={styles.cardsmall}>
 													<p className={`${styles.cardtext} ${styles.black}`}>10</p>
@@ -170,10 +290,7 @@ const GameRoom: NextPage = () => {
 													<p className={`${styles.cardtext} ${styles.red}`}>Q</p>
 													<p className={`${styles.cardimg} ${styles.red}`}>&diams;</p>
 												</div>
-												<div className={styles.cardsmall}>
-													<p className={`${styles.cardtext} ${styles.red}`}>1</p>
-													<p className={`${styles.cardimg} ${styles.red}`}>&diams;</p>
-												</div>
+												<div className={styles.cardback}></div>
 											</div>
 										</div>
 									</Card.Body>

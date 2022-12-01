@@ -8,22 +8,23 @@
 	position: relative;
 }
 
-.board {
+.table .board {
 	position: absolute;
 	top: 40%;
 	left: 30%;
 }
-.cardsmall {
+
+.table .cardsmall {
 	border: 0.2em solid #333;
 	border-radius: 10%;
 	height: 100px;
-	width: 70px;
-	margin-right: 30px;
+	width: 80px;
+	margin-right: 20px;
 	float: left;
 	background-color: #fff;
 }
 
-.cardtext {
+.table .cardtext {
 	margin: 0;
 	margin-top: 10px;
 	text-align: center;
@@ -32,10 +33,75 @@
 	padding: 0;
 }
 
-.cardimg {
+.table .cardimg {
 	text-align: center;
 	margin: -10px;
 	font-size: 2em;
+}
+
+.table .cardback {
+	border: 0.2em solid #fff;
+	margin: 2px;
+	border-radius: 10%;
+	height: 96px;
+	width: 76px;
+	float: left;
+	background-color: #333;
+}
+
+.table .dealer {
+	background-color: #ff0000;
+	position: absolute;
+	top: -50px;
+	left: 46%;
+	height: 100px;
+	border-radius: 50%;
+	width: 100px;
+}
+
+.table .player {
+	background-color: #333;
+	position: absolute;
+	height: 100px;
+	border-radius: 50%;
+	width: 100px;
+}
+
+.table .player.player1 {
+	top: -10px;
+	left: 18%;
+}
+
+.cards .cardsmall {
+	border: 0.2em solid #333;
+	border-radius: 10%;
+	height: 120px;
+	width: 100%;
+	background-color: #fff;
+}
+
+.cards .cardtext {
+	margin: 0;
+	margin-top: 10px;
+	text-align: center;
+	font-size: 1.5em;
+	font-weight: bold;
+	padding: 0;
+}
+
+.cards .cardimg {
+	text-align: center;
+	margin: -5px;
+	font-size: 2em;
+}
+
+.cards .cardback {
+	border: 0.2em solid #fff;
+	margin: 2px;
+	border-radius: 10%;
+	height: 116px;
+	width: 100%;
+	background-color: #333;
 }
 
 .red {
