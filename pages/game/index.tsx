@@ -57,7 +57,7 @@ const Game: NextPage = () => {
 										<GameCard
 											id={1}
 											active={true}
-											image="https://api.lorem.space/image/car?w=300&h=300&hash=8B7BCDC0"
+											image="https://api.lorem.space/image/furniture?w=300&h=300&hash=8B7BCDC0"
 										/>
 									</Grid>
 									{$mockData.map((mData) => (
@@ -66,7 +66,7 @@ const Game: NextPage = () => {
 												key={mData}
 												id={mData}
 												active={false}
-												image={`https://api.lorem.space/image/car?w=300&h=300&hash=8B7BCDC${mData}`}
+												image={`https://api.lorem.space/image/furniture?w=300&h=300&hash=8B7BCDC${mData}`}
 											/>
 										</Grid>
 									))}

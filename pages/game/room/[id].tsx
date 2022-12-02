@@ -54,6 +54,14 @@ const GameRoom: NextPage = () => {
 		$setContractLoading(false);
 	};
 
+	const callGame = async () => {
+		$setContractLoading(true);
+
+		toast('CALL SUCCESS');
+
+		$setContractLoading(false);
+	};
+
 	const foldGame = async () => {
 		$setContractLoading(true);
 
@@ -111,7 +119,7 @@ const GameRoom: NextPage = () => {
 									<Card.Body>
 										<Grid.Container gap={2}>
 											<Grid>
-												<Badge enableShadow size="lg" disableOutline>
+												<Badge enableShadow size="lg" disableOutline color="default">
 													WAITING
 												</Badge>
 											</Grid>
@@ -153,7 +161,7 @@ const GameRoom: NextPage = () => {
 															<p className={`${styles.cardimg} ${styles.black}`}>&spades;</p>
 														</div>
 													</Grid>
-													<Grid xs={6} lg={2}>
+													{/* <Grid xs={6} lg={2}>
 														<div className={styles.cardsmall}>
 															<p className={`${styles.cardtext} ${styles.red}`}>Q</p>
 															<p className={`${styles.cardimg} ${styles.red}`}>&hearts;</p>
@@ -167,7 +175,7 @@ const GameRoom: NextPage = () => {
 													</Grid>
 													<Grid xs={6} lg={2}>
 														<div className={styles.cardback}></div>
-													</Grid>
+													</Grid> */}
 												</Grid.Container>
 											</Grid>
 										</Grid.Container>
@@ -209,50 +217,25 @@ const GameRoom: NextPage = () => {
 													</Grid>
 												) : (
 													<>
-														<Grid xs={12} lg={3}>
-															{$contractLoading ? (
-																<div className="full_width text_center">
-																	<Loading type="points" size="xl" />
-																</div>
-															) : (
-																<Button className="full_width" size="lg" auto onPress={betGame} disabled={!pairingData}>
-																	BET
-																</Button>
-															)}
+														<Grid xs={12} lg={2}>
+															<Button className="full_width" size="lg" auto onPress={betGame} disabled={!pairingData}>
+																BET
+															</Button>
 														</Grid>
-														<Grid xs={12} lg={3}>
-															{$contractLoading ? (
-																<div className="full_width text_center">
-																	<Loading type="points" size="xl" />
-																</div>
-															) : (
-																<Button
-																	className="full_width"
-																	size="lg"
-																	auto
-																	onPress={foldGame}
-																	disabled={!pairingData}
-																>
-																	FOLD
-																</Button>
-															)}
+														<Grid xs={12} lg={2}>
+															<Button className="full_width" size="lg" auto onPress={callGame} disabled={!pairingData}>
+																CALL
+															</Button>
 														</Grid>
-														<Grid xs={12} lg={3}>
-															{$contractLoading ? (
-																<div className="full_width text_center">
-																	<Loading type="points" size="xl" />
-																</div>
-															) : (
-																<Button
-																	className="full_width"
-																	size="lg"
-																	auto
-																	onPress={allInGame}
-																	disabled={!pairingData}
-																>
-																	ALL IN
-																</Button>
-															)}
+														<Grid xs={12} lg={2}>
+															<Button className="full_width" size="lg" auto onPress={foldGame} disabled={!pairingData}>
+																FOLD
+															</Button>
+														</Grid>
+														<Grid xs={12} lg={2}>
+															<Button className="full_width" size="lg" auto onPress={allInGame} disabled={!pairingData}>
+																ALL IN
+															</Button>
 														</Grid>
 													</>
 												)}
@@ -272,22 +255,79 @@ const GameRoom: NextPage = () => {
 									<Card.Body>
 										<div className={styles.table}>
 											<div className={styles.dealer}></div>
-											<Avatar
-												className={`${styles.player} ${styles.player1}`}
-												color="primary"
-												key="p1"
-												size="lg"
-												pointer
-												text="P1"
-											/>
-											<Avatar className={`${styles.player} ${styles.player2}`} key="p2" size="lg" pointer text="P2" />
-											<Avatar className={`${styles.player} ${styles.player3}`} key="p3" size="lg" pointer text="P3" />
-											<Avatar className={`${styles.player} ${styles.player4}`} key="p4" size="lg" pointer text="P4" />
-											<Avatar className={`${styles.player} ${styles.player5}`} key="p5" size="lg" pointer text="P5" />
-											<Avatar className={`${styles.player} ${styles.player6}`} key="p6" size="lg" pointer text="P6" />
-											<Avatar className={`${styles.player} ${styles.player7}`} key="p7" size="lg" pointer text="P7" />
-											<Avatar className={`${styles.player} ${styles.player8}`} key="p8" size="lg" pointer text="P8" />
+											<>
+												<Avatar
+													className={`${styles.player} ${styles.player1}`}
+													color="primary"
+													key="p1"
+													size="lg"
+													pointer
+													text="P1"
+												/>
+												<div className={`${styles.status} ${styles.player1}`} key="p1status">
+													<Badge enableShadow size="sm" disableOutline color="default">
+														WAITING
+													</Badge>
+												</div>
+											</>
+											<>
+												<Avatar className={`${styles.player} ${styles.player2}`} key="p2" size="lg" pointer text="P2" />
+												<div className={`${styles.status} ${styles.player2}`} key="p2status">
+													<Badge enableShadow size="sm" disableOutline color="primary">
+														BET 100
+													</Badge>
+												</div>
+											</>
+											<>
+												<Avatar className={`${styles.player} ${styles.player3}`} key="p3" size="lg" pointer text="P3" />
+												<div className={`${styles.status} ${styles.player3}`} key="p3status">
+													<Badge enableShadow size="sm" disableOutline color="error">
+														FOLDED
+													</Badge>
+												</div>
+											</>
+											<>
+												<Avatar className={`${styles.player} ${styles.player4}`} key="p4" size="lg" pointer text="P4" />
+												<div className={`${styles.status} ${styles.player4}`} key="p4status">
+													<Badge enableShadow size="sm" disableOutline color="default">
+														WAITING
+													</Badge>
+												</div>
+											</>
+											<>
+												<Avatar className={`${styles.player} ${styles.player5}`} key="p5" size="lg" pointer text="P5" />
+												<div className={`${styles.status} ${styles.player5}`} key="p5status">
+													<Badge enableShadow size="sm" disableOutline color="default">
+														WAITING
+													</Badge>
+												</div>
+											</>
+											<>
+												<Avatar className={`${styles.player} ${styles.player6}`} key="p6" size="lg" pointer text="P6" />
+												<div className={`${styles.status} ${styles.player6}`} key="p6status">
+													<Badge enableShadow size="sm" disableOutline color="default">
+														WAITING
+													</Badge>
+												</div>
+											</>
+											<>
+												<Avatar className={`${styles.player} ${styles.player7}`} key="p7" size="lg" pointer text="P7" />
+												<div className={`${styles.status} ${styles.player7}`} key="p7status">
+													<Badge enableShadow size="sm" disableOutline color="default">
+														WAITING
+													</Badge>
+												</div>
+											</>
+											<>
+												<Avatar className={`${styles.player} ${styles.player8}`} key="p8" size="lg" pointer text="P8" />
+												<div className={`${styles.status} ${styles.player8}`} key="p8status">
+													<Badge enableShadow size="sm" disableOutline color="default">
+														WAITING
+													</Badge>
+												</div>
+											</>
 											<div className={styles.board}>
+												<div className={styles.potmoney}>POT MONEY: 1000</div>
 												<div className={styles.cardsmall}>
 													<p className={`${styles.cardtext} ${styles.black}`}>10</p>
 													<p className={`${styles.cardimg} ${styles.black}`}>&clubs;</p>

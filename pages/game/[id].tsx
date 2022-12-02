@@ -142,7 +142,7 @@ const GameSelect: NextPage = () => {
 							<Grid xs={12} lg={4}>
 								<Card>
 									<Card.Image
-										src="https://api.lorem.space/image/car?w=300&h=350&hash=8B7BCDC0"
+										src="https://api.lorem.space/image/furniture?w=300&h=350&hash=8B7BCDC0"
 										objectFit="cover"
 										width="100%"
 										height={350}
