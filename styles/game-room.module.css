@@ -60,7 +60,6 @@
 }
 
 .table .player {
-	background-color: #333;
 	position: absolute;
 	height: 100px;
 	border-radius: 50%;
@@ -68,8 +67,43 @@
 }
 
 .table .player.player1 {
-	top: -10px;
+	top: 0%;
 	left: 18%;
+}
+
+.table .player.player2 {
+	top: 0%;
+	left: 74%;
+}
+
+.table .player.player3 {
+	top: 20%;
+	left: -1%;
+}
+
+.table .player.player4 {
+	top: 20%;
+	left: 92%;
+}
+
+.table .player.player5 {
+	top: 70%;
+	left: 3%;
+}
+
+.table .player.player6 {
+	top: 70%;
+	left: 88%;
+}
+
+.table .player.player7 {
+	top: 88%;
+	left: 30%;
+}
+
+.table .player.player8 {
+	top: 88%;
+	left: 64%;
 }
 
 .cards .cardsmall {

@@ -2,7 +2,7 @@ import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useEffect, useState, useMemo } from 'react';
 
-import { Container, Card, Text, Grid, Input, Spacer, Button, Loading, Col, Badge } from '@nextui-org/react';
+import { Container, Card, Text, Grid, Input, Spacer, Button, Loading, Col, Badge, Avatar } from '@nextui-org/react';
 import { toast } from 'react-toastify';
 
 import Head from 'next/head';
@@ -177,7 +177,7 @@ const GameRoom: NextPage = () => {
 							<Grid xs={12} lg={6}>
 								<Col>
 									<Text h1 color="white">
-										POKER GAME {id} - PLAYER 1
+										POKER GAME {id} - P1
 									</Text>
 									<Text h4 color="white">
 										PLAYERS JOIN: 3 / 8
@@ -272,7 +272,21 @@ const GameRoom: NextPage = () => {
 									<Card.Body>
 										<div className={styles.table}>
 											<div className={styles.dealer}></div>
-											<div className={`${styles.player} ${styles.player1}`}></div>
+											<Avatar
+												className={`${styles.player} ${styles.player1}`}
+												color="primary"
+												key="p1"
+												size="lg"
+												pointer
+												text="P1"
+											/>
+											<Avatar className={`${styles.player} ${styles.player2}`} key="p2" size="lg" pointer text="P2" />
+											<Avatar className={`${styles.player} ${styles.player3}`} key="p3" size="lg" pointer text="P3" />
+											<Avatar className={`${styles.player} ${styles.player4}`} key="p4" size="lg" pointer text="P4" />
+											<Avatar className={`${styles.player} ${styles.player5}`} key="p5" size="lg" pointer text="P5" />
+											<Avatar className={`${styles.player} ${styles.player6}`} key="p6" size="lg" pointer text="P6" />
+											<Avatar className={`${styles.player} ${styles.player7}`} key="p7" size="lg" pointer text="P7" />
+											<Avatar className={`${styles.player} ${styles.player8}`} key="p8" size="lg" pointer text="P8" />
 											<div className={styles.board}>
 												<div className={styles.cardsmall}>
 													<p className={`${styles.cardtext} ${styles.black}`}>10</p>
