@@ -22,11 +22,16 @@ import { MainLayout } from '../../../layouts';
 import { Helper } from '../../../services/helper/helper.service';
 import { GetHashPackInformation } from '../../../providers/hashpack.provider';
 
+import useSocketRoom from '../../../hooks/useSocketRoom.hook';
+
 import styles from '../../../styles/game-room.module.css';
 
 const $$client = Client.forTestnet();
 const GameRoom: NextPage = () => {
 	const $router = useRouter();
+
+	const { connect, disconnect, $numberOfPlayers } = useSocketRoom(1);
+
 	const { id } = $router.query;
 
 	const $helper: Helper = useMemo(() => new Helper(), []);
@@ -80,9 +85,12 @@ const GameRoom: NextPage = () => {
 
 	useEffect(() => {
 		if (pairingData) {
-			$setAddress(pairingData?.accountIds.reduce($helper.conCatAccounts));
+			const address: string = pairingData?.accountIds.reduce($helper.conCatAccounts);
+			$setAddress(address);
+			connect(address, 'WEB23');
 		} else {
 			$setAddress('');
+			disconnect();
 		}
 
 		// eslint-disable-next-line
@@ -171,7 +179,7 @@ const GameRoom: NextPage = () => {
 										POKER GAME {id} - P1
 									</Text>
 									<Text h4 color="white">
-										PLAYERS JOIN: 3 / 8
+										PLAYERS JOIN: {$numberOfPlayers} / 8
 									</Text>
 									<Card>
 										<Card.Body>
