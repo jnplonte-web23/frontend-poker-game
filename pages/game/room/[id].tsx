@@ -30,7 +30,7 @@ const $$client = Client.forTestnet();
 const GameRoom: NextPage = () => {
 	const $router = useRouter();
 
-	const { connect, disconnect, $numberOfPlayers } = useSocketRoom(1);
+	const { $connect, $disconnect, $numberOfPlayers, $currentPlayer } = useSocketRoom(1);
 
 	const { id } = $router.query;
 
@@ -87,10 +87,10 @@ const GameRoom: NextPage = () => {
 		if (pairingData) {
 			const address: string = pairingData?.accountIds.reduce($helper.conCatAccounts);
 			$setAddress(address);
-			connect(address, 'WEB23');
+			$connect(address, 'WEB23');
 		} else {
 			$setAddress('');
-			disconnect();
+			$disconnect();
 		}
 
 		// eslint-disable-next-line
@@ -176,7 +176,7 @@ const GameRoom: NextPage = () => {
 							<Grid xs={12} lg={8}>
 								<Col>
 									<Text h1 color="white">
-										POKER GAME {id} - P1
+										POKER GAME {id} - PLAYER No.{$currentPlayer ? $currentPlayer['playerNumber'] : ''}
 									</Text>
 									<Text h4 color="white">
 										PLAYERS JOIN: {$numberOfPlayers} / 8
@@ -240,7 +240,10 @@ const GameRoom: NextPage = () => {
 							<Grid xs={12} lg={12}>
 								<Card>
 									<Card.Header>
-										<Text b>POKER TABLE</Text>
+										<Text b>
+											POKER TABLE{' '}
+											{$currentPlayer && $currentPlayer['playerNumber'] ? $currentPlayer['playerNumber'] : ''}
+										</Text>
 									</Card.Header>
 									<Card.Divider />
 									<Card.Body>
@@ -249,11 +252,13 @@ const GameRoom: NextPage = () => {
 											<>
 												<Avatar
 													className={`${styles.player} ${styles.player1}`}
-													color="primary"
+													color={$currentPlayer && $currentPlayer['playerNumber'] === 1 ? 'primary' : 'default'}
 													key="p1"
 													size="lg"
 													pointer
-													text="P1"
+													text={
+														$currentPlayer && $currentPlayer['playerNumber'] === 1 ? $currentPlayer['userName'] : 'P1'
+													}
 												/>
 												<div className={`${styles.status} ${styles.player1}`} key="p1status">
 													<Badge enableShadow size="sm" disableOutline color="default">
@@ -262,7 +267,16 @@ const GameRoom: NextPage = () => {
 												</div>
 											</>
 											<>
-												<Avatar className={`${styles.player} ${styles.player2}`} key="p2" size="lg" pointer text="P2" />
+												<Avatar
+													className={`${styles.player} ${styles.player2}`}
+													color={$currentPlayer && $currentPlayer['playerNumber'] === 2 ? 'primary' : 'default'}
+													key="p2"
+													size="lg"
+													pointer
+													text={
+														$currentPlayer && $currentPlayer['playerNumber'] === 2 ? $currentPlayer['userName'] : 'P2'
+													}
+												/>
 												<div className={`${styles.status} ${styles.player2}`} key="p2status">
 													<Badge enableShadow size="sm" disableOutline color="primary">
 														BET 100
@@ -270,7 +284,16 @@ const GameRoom: NextPage = () => {
 												</div>
 											</>
 											<>
-												<Avatar className={`${styles.player} ${styles.player3}`} key="p3" size="lg" pointer text="P3" />
+												<Avatar
+													className={`${styles.player} ${styles.player3}`}
+													color={$currentPlayer && $currentPlayer['playerNumber'] === 3 ? 'primary' : 'default'}
+													key="p3"
+													size="lg"
+													pointer
+													text={
+														$currentPlayer && $currentPlayer['playerNumber'] === 3 ? $currentPlayer['userName'] : 'P3'
+													}
+												/>
 												<div className={`${styles.status} ${styles.player3}`} key="p3status">
 													<Badge enableShadow size="sm" disableOutline color="error">
 														FOLDED
@@ -278,7 +301,16 @@ const GameRoom: NextPage = () => {
 												</div>
 											</>
 											<>
-												<Avatar className={`${styles.player} ${styles.player4}`} key="p4" size="lg" pointer text="P4" />
+												<Avatar
+													className={`${styles.player} ${styles.player4}`}
+													color={$currentPlayer && $currentPlayer['playerNumber'] === 4 ? 'primary' : 'default'}
+													key="p4"
+													size="lg"
+													pointer
+													text={
+														$currentPlayer && $currentPlayer['playerNumber'] === 4 ? $currentPlayer['userName'] : 'P4'
+													}
+												/>
 												<div className={`${styles.status} ${styles.player4}`} key="p4status">
 													<Badge enableShadow size="sm" disableOutline color="default">
 														WAITING
@@ -286,7 +318,16 @@ const GameRoom: NextPage = () => {
 												</div>
 											</>
 											<>
-												<Avatar className={`${styles.player} ${styles.player5}`} key="p5" size="lg" pointer text="P5" />
+												<Avatar
+													className={`${styles.player} ${styles.player5}`}
+													color={$currentPlayer && $currentPlayer['playerNumber'] === 5 ? 'primary' : 'default'}
+													key="p5"
+													size="lg"
+													pointer
+													text={
+														$currentPlayer && $currentPlayer['playerNumber'] === 5 ? $currentPlayer['userName'] : 'P5'
+													}
+												/>
 												<div className={`${styles.status} ${styles.player5}`} key="p5status">
 													<Badge enableShadow size="sm" disableOutline color="default">
 														WAITING
@@ -294,7 +335,16 @@ const GameRoom: NextPage = () => {
 												</div>
 											</>
 											<>
-												<Avatar className={`${styles.player} ${styles.player6}`} key="p6" size="lg" pointer text="P6" />
+												<Avatar
+													className={`${styles.player} ${styles.player6}`}
+													color={$currentPlayer && $currentPlayer['playerNumber'] === 6 ? 'primary' : 'default'}
+													key="p6"
+													size="lg"
+													pointer
+													text={
+														$currentPlayer && $currentPlayer['playerNumber'] === 6 ? $currentPlayer['userName'] : 'P6'
+													}
+												/>
 												<div className={`${styles.status} ${styles.player6}`} key="p6status">
 													<Badge enableShadow size="sm" disableOutline color="default">
 														WAITING
@@ -302,7 +352,16 @@ const GameRoom: NextPage = () => {
 												</div>
 											</>
 											<>
-												<Avatar className={`${styles.player} ${styles.player7}`} key="p7" size="lg" pointer text="P7" />
+												<Avatar
+													className={`${styles.player} ${styles.player7}`}
+													color={$currentPlayer && $currentPlayer['playerNumber'] === 7 ? 'primary' : 'default'}
+													key="p7"
+													size="lg"
+													pointer
+													text={
+														$currentPlayer && $currentPlayer['playerNumber'] === 7 ? $currentPlayer['userName'] : 'P7'
+													}
+												/>
 												<div className={`${styles.status} ${styles.player7}`} key="p7status">
 													<Badge enableShadow size="sm" disableOutline color="default">
 														WAITING
@@ -310,7 +369,16 @@ const GameRoom: NextPage = () => {
 												</div>
 											</>
 											<>
-												<Avatar className={`${styles.player} ${styles.player8}`} key="p8" size="lg" pointer text="P8" />
+												<Avatar
+													className={`${styles.player} ${styles.player8}`}
+													color={$currentPlayer && $currentPlayer['playerNumber'] === 8 ? 'primary' : 'default'}
+													key="p8"
+													size="lg"
+													pointer
+													text={
+														$currentPlayer && $currentPlayer['playerNumber'] === 8 ? $currentPlayer['userName'] : 'P8'
+													}
+												/>
 												<div className={`${styles.status} ${styles.player8}`} key="p8status">
 													<Badge enableShadow size="sm" disableOutline color="default">
 														WAITING
