@@ -5,13 +5,14 @@ const useSocketRoom = () => {
 	let socket: any;
 	const [$roomNumber, $setRoomNumber] = useState<number>(0);
 	const [$currentPlayer, $setCurrentPlayer] = useState<any>(null);
+	const [$timer, $setTimer] = useState<number>(0);
 	const [$numberOfPlayers, $setNumberOfPlayers] = useState<number>(0);
 
 	const $connect = async (_roomId: number, _walletId: string, _userName: string | null) => {
 		$setRoomNumber(_roomId);
 
 		// NOTE: max 8 players
-		if (_walletId && $numberOfPlayers + 1 < 8) {
+		if (_walletId && _roomId && $numberOfPlayers + 1 < 8) {
 			const roomUrl: string = process.env.NEXT_PUBLIC_SOCKET_ROOM || '';
 			const roomKey: string = process.env.NEXT_PUBLIC_SOCKET_KEY || '';
 			const roomToken: string = process.env.NEXT_PUBLIC_SOCKET_TOKEN || '';
@@ -56,7 +57,13 @@ const useSocketRoom = () => {
 			socket.on('all-in', (_data: any) => {
 				console.log(socket.id, _data, '<-----ALLIN');
 			});
+
+			socket.on('timer', function (_data: any) {
+				$setTimer(Number(_data.countdown));
+			});
 		}
+
+		return socket;
 	};
 
 	const $disconnect = async () => {
@@ -89,7 +96,7 @@ const useSocketRoom = () => {
 		return response.json();
 	};
 
-	return { $connect, $disconnect, $callEvents, $numberOfPlayers, $roomNumber, $currentPlayer };
+	return { $connect, $disconnect, $callEvents, $numberOfPlayers, $roomNumber, $currentPlayer, $timer };
 };
 
 export default useSocketRoom;

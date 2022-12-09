@@ -29,11 +29,10 @@ import useSocketRoom from '../../../hooks/useSocketRoom.hook';
 import styles from '../../../styles/game-room.module.css';
 
 const $$client = Client.forTestnet();
-
 const GameRoom: NextPage = () => {
 	const $router = useRouter();
 
-	const { $connect, $disconnect, $callEvents, $numberOfPlayers, $currentPlayer } = useSocketRoom();
+	const { $connect, $disconnect, $callEvents, $numberOfPlayers, $currentPlayer, $timer } = useSocketRoom();
 
 	const { id } = $router.query;
 
@@ -133,6 +132,15 @@ const GameRoom: NextPage = () => {
 		// eslint-disable-next-line
 	}, [status, data]);
 
+	useEffect(() => {
+		if ($timer <= 0) {
+			$setContractLoading(true);
+
+			$setEventPayload({ test: 333 });
+			$setEventName('fold');
+		}
+	}, [$timer]);
+
 	// useEffect(() => {
 	// 	if (pairingData) {
 	// 		const address: string = pairingData?.accountIds.reduce($helper.conCatAccounts);
@@ -201,20 +209,25 @@ const GameRoom: NextPage = () => {
 											</Grid> */}
 										</Grid.Container>
 										<Grid.Container gap={2}>
-											<Grid xs={12} lg={4}>
+											<Grid xs={12} lg={8}>
 												<Text h4 color="white">
 													CARDS:
 												</Text>
 											</Grid>
-											<Grid xs={12} lg={8}>
-												<Grid.Container className={styles.cards} gap={1}>
-													<Grid xs={6} lg={5}>
+											<Grid xs={12} lg={4}>
+												<Text h4 color="white">
+													TIMER: {$timer}
+												</Text>
+											</Grid>
+											<Grid xs={12} lg={12}>
+												<Grid.Container className={styles.cards}>
+													<Grid xs={6} lg={3}>
 														<div className={styles.cardsmall}>
 															<p className={`${styles.cardtext} ${styles.black}`}>A</p>
 															<p className={`${styles.cardimg} ${styles.black}`}>&clubs;</p>
 														</div>
 													</Grid>
-													<Grid xs={6} lg={5}>
+													<Grid xs={6} lg={3}>
 														<div className={styles.cardsmall}>
 															<p className={`${styles.cardtext} ${styles.black}`}>J</p>
 															<p className={`${styles.cardimg} ${styles.black}`}>&spades;</p>

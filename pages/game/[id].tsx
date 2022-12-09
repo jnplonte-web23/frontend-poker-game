@@ -104,7 +104,7 @@ const GameSelect: NextPage = () => {
 	};
 
 	useEffect(() => {
-		if (pairingData) {
+		if (pairingData && pairingData.accountIds) {
 			$setAddress(pairingData?.accountIds.reduce($helper.conCatAccounts));
 		} else {
 			$setAddress('');
