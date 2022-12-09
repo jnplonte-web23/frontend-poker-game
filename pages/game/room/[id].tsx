@@ -2,6 +2,8 @@ import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useEffect, useState, useMemo } from 'react';
 
+import { useQuery, useMutation, useQueryClient, QueryClient, QueryClientProvider } from 'react-query';
+
 import { Container, Card, Text, Grid, Input, Spacer, Button, Loading, Col, Badge, Avatar } from '@nextui-org/react';
 import { toast } from 'react-toastify';
 
@@ -27,10 +29,11 @@ import useSocketRoom from '../../../hooks/useSocketRoom.hook';
 import styles from '../../../styles/game-room.module.css';
 
 const $$client = Client.forTestnet();
+
 const GameRoom: NextPage = () => {
 	const $router = useRouter();
 
-	const { $connect, $disconnect, $numberOfPlayers, $currentPlayer } = useSocketRoom(1);
+	const { $connect, $disconnect, $callEvents, $numberOfPlayers, $currentPlayer } = useSocketRoom();
 
 	const { id } = $router.query;
 
@@ -41,7 +44,20 @@ const GameRoom: NextPage = () => {
 	const [$contractLoading, $setContractLoading] = useState(true);
 	const [$numberOfCoins, $setNumberOfCoins] = useState<number>(1);
 
+	const [$eventName, $setEventName] = useState<string | null>(null);
+	const [$eventPayload, $setEventPayload] = useState<any>();
+	const [$eventData, $setEventData] = useState<any>();
+
 	const [$address, $setAddress] = useState<string>('');
+
+	const { refetch, status, data } = useQuery(
+		['roomEvents', $eventName, $eventPayload],
+		() => $callEvents($eventName, $eventPayload),
+		{
+			refetchOnWindowFocus: false,
+			enabled: false,
+		}
+	);
 
 	const handleChangeNumberOfCoins = (_event: any) => {
 		$setNumberOfCoins(Number(_event.target.value));
@@ -54,47 +70,81 @@ const GameRoom: NextPage = () => {
 	const betGame = async () => {
 		$setContractLoading(true);
 
-		toast('BET SUCCESS');
-
-		$setContractLoading(false);
+		$setEventPayload({ test: 111 });
+		$setEventName('bet');
 	};
 
 	const callGame = async () => {
 		$setContractLoading(true);
 
-		toast('CALL SUCCESS');
-
-		$setContractLoading(false);
+		$setEventPayload({ test: 222 });
+		$setEventName('call');
 	};
 
 	const foldGame = async () => {
 		$setContractLoading(true);
 
-		toast('FOLD SUCCESS');
-
-		$setContractLoading(false);
+		$setEventPayload({ test: 333 });
+		$setEventName('fold');
 	};
 
 	const allInGame = async () => {
 		$setContractLoading(true);
 
-		toast('ALL IN SUCCESS');
-
-		$setContractLoading(false);
+		$setEventPayload({ test: 444 });
+		$setEventName('allin');
 	};
 
 	useEffect(() => {
-		if (pairingData) {
-			const address: string = pairingData?.accountIds.reduce($helper.conCatAccounts);
-			$setAddress(address);
-			$connect(address, 'WEB23');
-		} else {
-			$setAddress('');
-			$disconnect();
+		if ($eventName && $eventPayload) {
+			refetch();
+		}
+
+		$setContractLoading(false);
+
+		// eslint-disable-next-line
+	}, [$eventName, $eventPayload]);
+
+	useEffect(() => {
+		if (status === 'success') {
+			switch ($eventName) {
+				case 'bet':
+					toast('BET SUCCESS');
+					break;
+				case 'call':
+					toast('CALL SUCCESS');
+					break;
+				case 'fold':
+					toast('FOLD SUCCESS');
+					break;
+				case 'allin':
+					toast('ALL IN SUCCESS');
+					break;
+
+				default:
+					toast('EVENT SUCCESS');
+					break;
+			}
+
+			console.log(status, data);
+			$setEventData(data);
 		}
 
 		// eslint-disable-next-line
-	}, [pairingData]);
+	}, [status, data]);
+
+	// useEffect(() => {
+	// 	if (pairingData) {
+	// 		const address: string = pairingData?.accountIds.reduce($helper.conCatAccounts);
+	// 		$setAddress(address);
+	// 		$connect(1, address, 'WEB23');
+	// 	} else {
+	// 		$setAddress('');
+	// 		$disconnect();
+	// 	}
+
+	// 	// eslint-disable-next-line
+	// }, [pairingData]);
 
 	useEffect(() => {
 		const myPrivateKey: string = PrivateKey.fromString(process.env.NEXT_PUBLIC_TEST_PRIVATE || '').toString();
@@ -104,10 +154,13 @@ const GameRoom: NextPage = () => {
 			getInitData();
 		}
 
+		// NOTE: move here for testing
+		$connect(Number(id), `111.111.111${$numberOfPlayers}`, 'WEB23');
+
 		$setContractLoading(false);
 		$setLoading(false);
 		// eslint-disable-next-line
-	}, []);
+	}, [id]);
 
 	return (
 		<MainLayout>

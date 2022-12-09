@@ -28,10 +28,11 @@ const CustomNavbar = (props: IProps) => {
 	const [$balance, $setBalance] = useState<number>(0);
 
 	const getBalance = async () => {
-		const accountId: string =
-			pairingData && pairingData.accountIds ? pairingData.accountIds.reduce($helper.conCatAccounts) : '';
-		const accountBalance = await new AccountBalanceQuery().setAccountId(accountId).execute($$client);
-		$setBalance(Number(accountBalance.hbars.toTinybars()) / 100000000);
+		if (pairingData && pairingData.accountIds) {
+			const accountId: string = pairingData.accountIds.reduce($helper.conCatAccounts);
+			const accountBalance = await new AccountBalanceQuery().setAccountId(accountId).execute($$client);
+			$setBalance(Number(accountBalance.hbars.toTinybars()) / 100000000);
+		}
 	};
 
 	const handleCopy = () => {
@@ -124,7 +125,7 @@ const CustomNavbar = (props: IProps) => {
 					</Navbar.Collapse>
 				</Navbar.Content>
 
-				{!pairingData ? (
+				{!pairingData || !pairingData.accountIds ? (
 					<Navbar.Content>
 						<Button rounded color="primary" auto onPress={showSignInModal}>
 							SIGN IN
