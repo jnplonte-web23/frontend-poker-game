@@ -33,10 +33,10 @@ const HashPackProvider = ({ children, metaData, network }: IProviderProps) => {
 		const topic = initData.topic;
 		const pairingString = initData.pairingString;
 		//Saved pairings will return here, generally you will only have one unless you are doing something advanced
+		const pairingData: any = initData.savedPairings[0];
 
-		// const pairingData: any = initData.savedPairings[0];
-		// NOTE: move here for testing
-		const pairingData: any = { test: true };
+		// NOTE: add here for testing
+		// const pairingData: any = { test: true };
 
 		setState((exState) => ({
 			...exState,

@@ -95,17 +95,16 @@ const GameRoom: NextPage = () => {
 	};
 
 	useEffect(() => {
-		if ($eventName && $eventPayload) {
+		if ($eventName) {
 			refetch();
 		}
 
 		$setContractLoading(false);
-
 		// eslint-disable-next-line
-	}, [$eventName, $eventPayload]);
+	}, [$eventName]);
 
 	useEffect(() => {
-		if (status === 'success') {
+		if (status === 'success' && !$loading) {
 			switch ($eventName) {
 				case 'bet':
 					toast('BET SUCCESS');
@@ -125,34 +124,39 @@ const GameRoom: NextPage = () => {
 					break;
 			}
 
-			console.log(status, data);
+			console.log(status, data, '<STATUS');
 			$setEventData(data);
 		}
-
 		// eslint-disable-next-line
 	}, [status, data]);
 
-	useEffect(() => {
-		if ($timer <= 0) {
-			$setContractLoading(true);
-
-			$setEventPayload({ test: 333 });
-			$setEventName('fold');
-		}
-	}, [$timer]);
-
 	// useEffect(() => {
-	// 	if (pairingData) {
-	// 		const address: string = pairingData?.accountIds.reduce($helper.conCatAccounts);
-	// 		$setAddress(address);
-	// 		$connect(1, address, 'WEB23');
-	// 	} else {
-	// 		$setAddress('');
-	// 		$disconnect();
+	// 	if ($timer <= 0 && !$loading) {
+	// 		$setContractLoading(true);
+
+	// 		$setEventPayload({ test: 333 });
+	// 		$setEventName('fold');
 	// 	}
 
 	// 	// eslint-disable-next-line
-	// }, [pairingData]);
+	// }, [$timer]);
+
+	useEffect(() => {
+		if (pairingData && !$loading) {
+			const address: string = pairingData?.accountIds.reduce($helper.conCatAccounts);
+			$setAddress(address);
+
+			console.log(id, address, 'WEB23', '<<<');
+			$connect(Number(id), address, 'WEB23');
+
+			// NOTE: add here for testing
+			// $connect(Number(id), `111.111.111${$numberOfPlayers}`, 'WEB23');
+		} else {
+			$setAddress('');
+			$disconnect();
+		}
+		// eslint-disable-next-line
+	}, [pairingData]);
 
 	useEffect(() => {
 		const myPrivateKey: string = PrivateKey.fromString(process.env.NEXT_PUBLIC_TEST_PRIVATE || '').toString();
@@ -161,9 +165,6 @@ const GameRoom: NextPage = () => {
 			$$client.setOperator(myAccountId, myPrivateKey);
 			getInitData();
 		}
-
-		// NOTE: move here for testing
-		$connect(Number(id), `111.111.111${$numberOfPlayers}`, 'WEB23');
 
 		$setContractLoading(false);
 		$setLoading(false);
